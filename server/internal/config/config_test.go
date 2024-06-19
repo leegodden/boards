@@ -26,6 +26,7 @@ func TestLoad(t *testing.T) {
 
 }
 
+// Correctly configured env values
 func setDBEnvVars() {
 	os.Setenv(DBHostKey, "localhost")
 	os.Setenv(DBPortKey, "5432")
@@ -34,6 +35,7 @@ func setDBEnvVars() {
 	os.Setenv(DBPasswordKey, "password")
 }
 
+// Scenario where configs are missing
 func clearDBEnvVars() {
 	os.Unsetenv(DBHostKey)
 	os.Unsetenv(DBPortKey)

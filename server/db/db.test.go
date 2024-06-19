@@ -15,6 +15,9 @@ func TestConnect(t *testing.T) {
 	}
 
 	db, err := Connect(cfg.DatabaseConfig)
+	if err != nil {
+		t.Fatalf("Error connecting to db: %v", err)
+	}
 	defer db.Close()
 
 	assert.NotNil(t, db)

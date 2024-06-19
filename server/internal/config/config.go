@@ -23,6 +23,7 @@ type DatabaseConfig struct {
 	Password string `validate:"required"`
 }
 
+// Ensure all required fields in the DatabaseConfig are properly set
 func (dbConfig *DatabaseConfig) Validate() error {
 	validate := validator.New()
 	if err := validate.Struct(dbConfig); err != nil {
@@ -31,10 +32,12 @@ func (dbConfig *DatabaseConfig) Validate() error {
 	return nil
 }
 
+// Extensible: can easily be expanded to include more configurations
 type Config struct {
 	DatabaseConfig DatabaseConfig
 }
 
+// Manages the fetching and validation of configuration data
 func Load() (*Config, error) {
 	databaseConfig, err := getDatabaseConfig()
 	if err != nil {
@@ -43,8 +46,9 @@ func Load() (*Config, error) {
 	return &Config{DatabaseConfig: databaseConfig}, nil
 }
 
+// Get the env variables for the database connection
 func getDatabaseConfig() (DatabaseConfig, error) {
-	databaseConfig := DatabaseConfig{
+	databaseConfig := DatabaseConfig {
 		Host:     os.Getenv(DBHostKey),
 		Port:     os.Getenv(DBPortKey),
 		Name:     os.Getenv(DBNameKey),
