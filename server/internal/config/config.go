@@ -23,7 +23,7 @@ type DatabaseConfig struct {
 	Password string `validate:"required"`
 }
 
-// Ensure all required fields in the DatabaseConfig are properly set
+// Ensure all required fields in the DatabaseConfig are provided
 func (dbConfig *DatabaseConfig) Validate() error {
 	validate := validator.New()
 	if err := validate.Struct(dbConfig); err != nil {
@@ -37,12 +37,15 @@ type Config struct {
 	DatabaseConfig DatabaseConfig
 }
 
-// Manages the fetching and validation of configuration data
+// Manages the fetching and validation of configuration data. returns
+// a pointer to avoid copying the Config object
 func Load() (*Config, error) {
 	databaseConfig, err := getDatabaseConfig()
 	if err != nil {
 		return nil, err
 	}
+	// Return the memory address of the Config object effectively
+	// creating a pointer
 	return &Config{DatabaseConfig: databaseConfig}, nil
 }
 
@@ -56,7 +59,7 @@ func getDatabaseConfig() (DatabaseConfig, error) {
 		Password: os.Getenv(DBPasswordKey),
 	}
 
-	// validate all db params are available
+	// validate all db params are available and return an error if not
 	if err := databaseConfig.Validate(); err != nil {
 		return DatabaseConfig{}, err
 	}

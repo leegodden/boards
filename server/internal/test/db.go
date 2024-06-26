@@ -8,7 +8,6 @@ import (
 )
 
 func DB(t *testing.T) *db.DB {
-	
 	// load env vars into config
 	cfg, err := config.Load()
 	if err != nil {
@@ -23,3 +22,4 @@ func DB(t *testing.T) *db.DB {
 	}
 	return db
 }
+

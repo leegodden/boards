@@ -18,7 +18,7 @@ func TestRepository(t *testing.T) {
 
 	t.Run("Create user", func(t *testing.T) {
 		err := repo.CreateUser(testUser)
-      assert.NoError(t, err)
+		assert.NoError(t, err)
 	})
 
 	t.Run("Delete user", func(t *testing.T) {
