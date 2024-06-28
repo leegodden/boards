@@ -35,7 +35,7 @@ func setDBEnvVars() {
 	os.Setenv(DBPasswordKey, "password")
 }
 
-// Scenario where configs are missing
+// Scenario where values are missing
 func clearDBEnvVars() {
 	os.Unsetenv(DBHostKey)
 	os.Unsetenv(DBPortKey)

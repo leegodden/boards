@@ -58,6 +58,9 @@ func (s *service) CreateUser(input CreateUserInput) (*User, error) {
 
 	id := uuid.New()
 	now := time.Now()
+
+	// Create a new instance of User, assign the values from 'input' to the new instance
+	// and save the new User instance to the database
 	user := entity.User{
 		Id:        id,
 		Name:      input.Name,

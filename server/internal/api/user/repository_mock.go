@@ -12,11 +12,13 @@ type mockRepository struct {
 	users map[uuid.UUID]entity.User
 }
 
+// A function associated with the mockRepository struct
 func (r *mockRepository) CreateUser(user entity.User) error {
 	r.users[user.Id] = user
 	return nil
 }
 
+// A function associated with the mockRepository struct
 func (r *mockRepository) DeleteUser(userId uuid.UUID) error {
 	delete(r.users, userId)
 	return nil

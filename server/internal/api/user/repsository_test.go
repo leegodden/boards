@@ -25,6 +25,13 @@ func TestRepository(t *testing.T) {
 		err := repo.DeleteUser(testUser.Id)
 		assert.NoError(t, err)
 	})
+
+	t.Run("Create user with non-unique email", func(t *testing.T) {
+		testUserBadEmail := testUser
+		testUserBadEmail.Id = uuid.New()
+		err := repo.CreateUser(testUserBadEmail)
+		assert.ErrorIs(t, err, ErrUniqueEmailConstraint)
+	})
 }
 
 func newTestUser() entity.User {

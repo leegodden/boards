@@ -11,6 +11,13 @@ import (
 	"github.com/leegodden/boards/server/internal/response"
 )
 
+/*
+
+api.go defines the HTTP API for the user service, including request/response structures
+and handlers. Handles client requests and call the corresponding methods on the service interface,
+ensuring separation of concerns.
+*/
+
 var (
 	ErrMissingName              = errors.New("missing name")
 	ErrInvalidCreateUserRequest = errors.New("invalid create user request")
@@ -22,7 +29,7 @@ type API struct {
 	service Service
 }
 
-// Takes in a service as argument and sets the service field of the API struct 
+// initialize and return a new instance of the `API struct`
 func NewAPI(service Service) API {
 	return API{service: service}
 }
@@ -59,23 +66,26 @@ type CreateUserResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+// processes HTTP requests that aim to create a new user
 func (api *API) HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 	// Decode request and validate
 	var createUserRequest CreateUserRequest	
 	json.NewDecoder(r.Body).Decode(&createUserRequest)
 	if err := createUserRequest.Validate(); err != nil {
-		response.RespondWithError(w, http.StatusBadRequest, err)
-	}
-
-	// Create user
-	input := CreateUserInput(createUserRequest)
-	user, err := api.service.CreateUser(input)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		response.WriteWithError(w, http.StatusBadRequest, err)
 		return
 	}
 
-	// Write response
+	// If no errors then create user 
+	input := CreateUserInput(createUserRequest)
+	user, err := api.service.CreateUser(input)
+	if err != nil {
+		response.WriteWithError(w, http.StatusInternalServerError, ErrInternalServerError)
+		return
+	}
+
+	// Write the response using "WriteHeader" which sends an HTTP response 
+	// header with the provided status code.
 	w.WriteHeader(http.StatusCreated)
 	createUserResponse := CreateUserResponse{
 		Id:        user.Id,
@@ -85,5 +95,5 @@ func (api *API) HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
 	}
-	json.NewEncoder(w).Encode(createUserResponse)
+	response.WriteWithStatus(w, http.StatusCreated, createUserResponse)
 }

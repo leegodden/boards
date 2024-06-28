@@ -23,7 +23,8 @@ type DatabaseConfig struct {
 	Password string `validate:"required"`
 }
 
-// Ensure all required fields in the DatabaseConfig are provided
+// Associated with DatabaseConfig, ensure all required fields in 
+// are provided or improperly filled
 func (dbConfig *DatabaseConfig) Validate() error {
 	validate := validator.New()
 	if err := validate.Struct(dbConfig); err != nil {

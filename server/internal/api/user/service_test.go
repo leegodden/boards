@@ -12,12 +12,12 @@ import (
 // dependencies, making tests faster and more reliable
 
 // Call chain ->
-// service.CreateUser from service_test.go -> service.CreateUser from service.go ->
+// `service.CreateUser` from service_test.go calls `service.CreateUser`` from service.go calls
 // mockRepo.CreateUser from repository_mock.go.
 
 
 func TestService(t *testing.T) {
-	// creates the map using the make function and assigns it to the users field in 
+	// creates the map using the "make" function and assigns it to the users field in 
 	// the instance of mockRepository
 	mockRepo := &mockRepository{make(map[uuid.UUID]entity.User)}
 
